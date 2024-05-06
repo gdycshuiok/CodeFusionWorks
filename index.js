@@ -1,21 +1,15 @@
-function getPermutation(n, k) {
-  const nums = Array.from({ length: n }, (_, i) => i + 1);
-  let result = "";
-  let count = 0;
-  const backtrack = (current) => {
-    if (current.length === n) {
-      count++;
-      if (count === k) result = current.join("");
-      return;
+function uniquePaths(m, n) {
+  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+  for (let i = 0; i < m; i++) {
+    dp[i][0] = 1;
+  }
+  for (let j = 0; j < n; j++) {
+    dp[0][j] = 1;
+  }
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
     }
-    if (count >= k) return;
-    for (const num of nums) {
-      if (current.includes(num)) continue;
-      current.push(num);
-      backtrack(current);
-      current.pop();
-    }
-  };
-  backtrack([]);
-  return result;
+  }
+  return dp[m - 1][n - 1];
 }
